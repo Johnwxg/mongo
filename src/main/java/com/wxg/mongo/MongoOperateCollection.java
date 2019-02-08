@@ -95,4 +95,26 @@ public class MongoOperateCollection {
 		}
 	}
 	
+	//删除文档
+	public void deleteDocument(String collectNm){
+		try {
+        	//更新文档  将文档中title=Java 教程的文档修改为by=wxg  
+    		MongoCollection<Document> collection = database.getCollection(collectNm.toString());
+    		//删除符合条件的第一个文档  
+    		collection.deleteOne(Filters.eq("title", "Java 教程"));
+    		//删除所有符合条件的文档  
+//    		collection.deleteMany(Filters.eq("title", "Java 教程"));
+    		FindIterable<Document> findIterable = collection.find();
+    		MongoCursor<Document> mongoCursor = findIterable.iterator();
+    		while(mongoCursor.hasNext()){
+    			System.out.println(mongoCursor.next());
+    		}
+    		
+    		System.out.println("文档删除成功！");
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		
+	}
+	
 }
